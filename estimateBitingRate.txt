@@ -1,0 +1,75 @@
+OpenBUGS script to estimate parameters for a temperature dependent function for Culicoides mortality rate
+
+MODEL
+
+model{
+
+# For each observation ...
+  for (j in 1:nObs){
+
+## Exponential model
+#    a[j]<-b0*exp(b1*Y[j,1])
+
+# Briere model
+    a[j]<-b*Y[j,1]*(Y[j,1]-Tmin)*sqrt(42-Y[j,1])
+
+## Quadratic model
+#    a[j]<-b*Y[j,1]*(Y[j,1]-Tmin)
+
+## Linear model
+#    a[j]<-b*(Y[j,1]-Tmin)
+
+# Likelihood
+    Y[j,2]~dnorm(a[j],tau.e)
+
+  }
+
+# Priors
+# Exponential model
+#	b0~dexp(0.01)
+#  b1~dexp(0.01)
+
+# Briere model
+	b~dexp(0.01)
+  Tmin~dexp(0.01)
+#  Tmax~dnorm(40,100)
+
+## Linear/quadratic model
+#	b~dexp(0.01)
+#  Tmin~dexp(0.01)
+
+# Error
+	tau.e~dexp(0.01)
+	sig.e<-1/sqrt(tau.e)
+
+}
+
+INITIAL VALUES
+
+Exponential model
+list(b0=0.05,b1=0.05,tau.e=0.1)
+
+Briere model
+list(b=0.0001,Tmin=10,tau.e=0.1)
+
+Quadratic model
+list(b=0.001,Tmin=10,tau.e=0.1)
+
+Linear model
+list(b=0.01,Tmin=10,tau.e=0.1)
+
+DATA
+Extracted from Figure 1 in Mullens et al (2004) Vet Ital 40, 160-166
+1 - temperature (degrees C)
+2 - biting rate (per day)
+
+list(
+nObs=6,
+Y=structure(.Data=c(
+13.02540416,0.070921986, 
+17.18244804,0.121985816, 
+21.06235566,0.207092199, 
+27.0669746,0.276595745, 
+30.02309469,0.333333333, 
+33.99538106,0.387234043),.Dim=c(6,2))
+)

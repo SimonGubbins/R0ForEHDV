@@ -1,0 +1,50 @@
+OpenBUGS script to estimate the probability of transmission from host to vector for EHDV
+
+MODEL
+
+model{
+
+# Likelihood
+  for (j in 1:nExpt){
+
+# Likelihood
+     Y[j,2]~dbin(p[j],Y[j,3])
+
+# Probability of transmission from host to vector
+     p[j]~dbeta(a,b)
+
+  }
+
+# Priors for hyper-parameters
+     a~dexp(0.01)
+     b~dexp(0.01)
+
+}
+
+
+DATA
+Columns in data structure are:
+1-serotype
+2-no. positive midges
+3-no. midges tested
+
+Rows 1-8: extracted from Paweska et al (2005) Med Vet Entomol 19, 200-207 (their table 4)
+Row 9: extracted from Federici et al (2016) Vet Ital 52, 271-279 (their Table I)
+Rows 10-13: extracted from Maurer et al. (2021) Schweizer Arch Tierheilkd 164, 60-70 (their Table 1)
+list(
+nExpt=13,
+Y=structure(.Data=c(
+1,8,349,
+2,32,522,
+3,8,585,
+4,1,331,
+5,16,624,
+6,7,363,
+7,50,406,
+8,3,495,
+6,6,962,
+6,1,56,
+6,2,89,
+7,5,160,
+7,0,59),.Dim=c(13,3))
+)

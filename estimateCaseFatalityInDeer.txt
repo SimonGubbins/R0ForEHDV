@@ -1,0 +1,41 @@
+OpenBUGS script to estimate the case fatality for EHDV in white-tailed deer
+
+MODEL
+
+model{
+
+# Likelihood
+  for (j in 1:nExpt){
+
+# Likelihood
+     Y[j,2]~dbin(p[j],Y[j,3])
+
+# Case fatality
+     p[j]~dbeta(a,b)
+
+  }
+
+# Priors for hyper-parameters
+     a~dexp(0.01)
+     b~dexp(0.01)
+
+}
+
+
+DATA
+Row 1: data from Table 1 in Quist et al. (1997) J Wildlife Dis 33, 584-599
+Row 2: data from Table 1 in Ruder et al. (2012) J Wildlife Dis 48, 676-685
+Row 3: data from Table I in Ruder et al. (2016) Vet Pathol 53, 574-584
+
+Columns in data structure are:
+1-serotype
+2-no. deer succumbing to infection
+3-no. infected deer
+
+list(
+nExpt=3,
+Y=structure(.Data=c(
+2,5,16,
+7,4,6,
+6,3,5),.Dim=c(3,3))
+)
