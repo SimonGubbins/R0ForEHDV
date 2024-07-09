@@ -7,17 +7,8 @@ model{
 # For each observation ...
   for (j in 1:nObs){
 
-## Exponential model
-#    a[j]<-b0*exp(b1*Y[j,1])
-
 # Briere model
     a[j]<-b*Y[j,1]*(Y[j,1]-Tmin)*sqrt(42-Y[j,1])
-
-## Quadratic model
-#    a[j]<-b*Y[j,1]*(Y[j,1]-Tmin)
-
-## Linear model
-#    a[j]<-b*(Y[j,1]-Tmin)
 
 # Likelihood
     Y[j,2]~dnorm(a[j],tau.e)
@@ -25,38 +16,17 @@ model{
   }
 
 # Priors
-# Exponential model
-#	b0~dexp(0.01)
-#  b1~dexp(0.01)
-
-# Briere model
-	b~dexp(0.01)
+  b~dexp(0.01)
   Tmin~dexp(0.01)
-#  Tmax~dnorm(40,100)
-
-## Linear/quadratic model
-#	b~dexp(0.01)
-#  Tmin~dexp(0.01)
 
 # Error
-	tau.e~dexp(0.01)
-	sig.e<-1/sqrt(tau.e)
+  tau.e~dexp(0.01)
+  sig.e<-1/sqrt(tau.e)
 
 }
 
 INITIAL VALUES
-
-Exponential model
-list(b0=0.05,b1=0.05,tau.e=0.1)
-
-Briere model
 list(b=0.0001,Tmin=10,tau.e=0.1)
-
-Quadratic model
-list(b=0.001,Tmin=10,tau.e=0.1)
-
-Linear model
-list(b=0.01,Tmin=10,tau.e=0.1)
 
 DATA
 Extracted from Figure 1 in Mullens et al (2004) Vet Ital 40, 160-166
