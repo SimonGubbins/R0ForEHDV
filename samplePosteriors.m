@@ -33,7 +33,7 @@ function pars=samplePosteriors(spp,sFlag,nSamp)
 % 10 - mortality rate parameter (mu0)
 % 11 - mortality rate parameter (mu1)
 %
-% Columns in the pars array for cattle are:
+% Columns in the pars array for deer are:
 % 1 - probability of transmission (vector to host)
 % 2 - probability of transmission (host to vector)
 % 3 - vector to host ratio

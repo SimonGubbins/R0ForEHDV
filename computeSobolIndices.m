@@ -1,11 +1,14 @@
 function [si,sTi]=computeSobolIndices(T,spp,sFlag,nSamp)
 %
-% [si,sTi]=computeSobolIndices_Cattle(T,sFlag,nSamp)
+% [si,sTi]=computeSobolIndices(T,spp,sFlag,nSamp)
 %
 % Matlab function to compute first-order and total Sobol indices for R0
 % at a given temperature for different strains of epizootic haemorrhagic
 % disease virus in cattle and deer using random sampling from the (joint)
 % posterior distributions
+%
+% This uses the Monte Carlo methods described in Azzani et al.
+% Environmental Modelling and Software 144, 105167 (2021)
 %
 % Inputs:
 % T - vector temperatures at which to compute R0 (and, hence, the indices)
@@ -24,44 +27,46 @@ function [si,sTi]=computeSobolIndices(T,spp,sFlag,nSamp)
 
 %==========================================================================
 % SAMPLE THE PARAMETERS AND COMPUTE R0
-% Sample from the joint posterior distribution and compute the
-% corresponding R0s
-pars=samplePosteriors(spp,sFlag,nSamp);
-R0=computeR0VsTemperature(spp,pars,T);
+% Sample from the joint posterior distribution ...
+parsA=samplePosteriors(spp,sFlag,nSamp);
 
-% Compute the total variance for R0
-f0=sum(R0,1)./nSamp;
-V=sum(R0.^2,1)./nSamp-(f0.^2);
+% ... and compute the corresponding R0
+R0A=computeR0VsTemperature(spp,parsA,T);
+
+% Reample from the joint posterior distribution ...
+parsB=samplePosteriors(spp,sFlag,nSamp);
+
+% ... and compute the corresponding R0
+R0B=computeR0VsTemperature(spp,parsB,T);
 %==========================================================================
 
 %==========================================================================
 % COMPUTE THE SOBOL INDICES
 % Create arrays to store the indices
-si=NaN(size(pars,2),length(T));
-sTi=NaN(size(pars,2),length(T));
-
-% Resample the parameters and compute the corresponding R0s
-parsR=samplePosteriors(spp,sFlag,nSamp);
-R0R=computeR0VsTemperature(spp,parsR,T);
+si=NaN(size(parsA,2),length(T));
+sTi=NaN(size(parsA,2),length(T));
 
 % For each parameter ...
-for j=1:size(pars,2)
+for j=1:size(parsA,2)
 
-% Create a paramter set with all columns except the current parameter set
-% to the resampled values
-    pars2=parsR;
-    pars2(:,j)=pars(:,j);
+% Create paramter sets with all columns the same except current parameter
+% which is set to that in the other set
+    parsAB=parsA;
+    parsAB(:,j)=parsB(:,j);
+    parsBA=parsB;
+    parsBA(:,j)=parsA(:,j);
 
-% Compute R0 for the new parameter set
-    R02=computeR0VsTemperature(spp,pars2,T);
+% Compute R0 for the new parameter sets
+    R0AB=computeR0VsTemperature(spp,parsAB,T);
+    R0BA=computeR0VsTemperature(spp,parsBA,T);
 
 % Compute the first-order Sobol index for the parameter
-    Vi=sum(R0.*R02,1)./nSamp-(f0.^2);
-    si(j,:)=Vi./V;
+    si(j,:)=2.*sum((R0BA-R0B).*(R0A-R0AB),1)./....
+               sum((R0A-R0B).^2+(R0BA-R0AB).^2,1);
 
 % Compute the Sobol index for the total effect of the parameter
-    Vni=sum(R0R.*R02,1)./nSamp-(f0.^2);
-    sTi(j,:)=1-Vni./V;
+    sTi(j,:)=sum((R0B-R0BA).^2+(R0A-R0AB).^2,1)./...
+             sum((R0A-R0B).^2+(R0BA-R0AB).^2,1);
 
 end
 %==========================================================================
