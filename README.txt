@@ -56,24 +56,15 @@ includes the data in the format used by the package.
 MATLAB SCRIPTS FOR UNCERTAINTY AND SENSITIVITY ANALYSES
 -------------------------------------------------------
 
-Uncertainty analysis
---------------------
-plotR0VsTemperature.m - plots R0 in cattle or deer as a function of temperature for different strains
-                        of EHDV 
-computeR0VsTemperature.m - calculates R0 at different temperatures for parameter values sampled from
-                           their joint posterior distributions
-
-Sensitivity analysis
---------------------
-plotUSAnalysis_R0VsTemperature.m - plots the first-order or total Sobol sensitivity indices for R0 in
-                                   cattle or deer as a function of temperature for different strains of
-                                   EHDV
-computeSobolIndices.m - computes the first-order and total Sobol sensitivity indices for R0 at different
-                        temperatures based on parameters sampled from their joint posterior distributions
-
 samplePosteriors.m - loads the MCMC samples and generates parameter sets drawn from the joint posterior
-                     distributions; this function is used by both plotR0VsTemperature.m and
-                     plotUSAnalysis_R0VsTemperature.m
+                     distributions
+
+computeR0VsTemperature.m - calculates R0 at different temperatures for parameter values sampled from
+                           their joint posterior distributions; this calls samplePosteriors.m
+
+computeSobolIndices.m - computes the first-order and total Sobol sensitivity indices for R0 at different
+                        temperatures based on parameters sampled from their joint posterior distributions;
+                        this calls samplePosteriors.m and computeR0VsTemperature.m
 
 
 ----------
