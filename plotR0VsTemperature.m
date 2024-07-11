@@ -135,6 +135,7 @@ for spp=1:length(sppList)
 % Compute the median and 2.5th and 97.5th percentiles for the measure
             if j==1
                 pM=prctile(maxR0,[50 2.5 97.5],1);
+%                 disp(['  max R0=' num2str(pM(1))])
             elseif j==2
                 pM=prctile(tempMaxR0,[50 2.5 97.5],1);
             elseif j==3
@@ -210,7 +211,7 @@ end
 %==========================================================================
 
 % Print to a file
-print('-dtiff','-r300','EHDV_R0VsTemperature.tif')
+print('-dtiff','-r300','..\EHDV_R0VsTemperature.tif')
 
 % Tidy up
 close('all')
