@@ -66,6 +66,12 @@ computeSobolIndices.m - computes the first-order and total Sobol sensitivity ind
                         temperatures based on parameters sampled from their joint posterior distributions;
                         this calls samplePosteriors.m and computeR0VsTemperature.m
 
+The scripts:
+- plotR0VsTemperature.m
+- plotSensitivityAnalysis.m
+plot the results of the uncertainty and sensitivity analyses, respectively.
+
+THe script plotUSAnalyses_R0VsTemperature.m is an old version and is deprecated.
 
 ----------
 DATA FILES
