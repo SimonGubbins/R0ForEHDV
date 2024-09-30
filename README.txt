@@ -10,8 +10,8 @@ MATLAB REQUIREMENTS
 The Matlab scripts/functions were run using Matlab version 2020b. The parameter estimation methods
 require the Statistics and Machine Learning and Parallel Computing toolboxes. However, they can be
 easily adapted to run without the Parallel Computing toolbox by changing any "parfor" loops to "for"
-loops in the functions with names beginning "ParEst". Other scripts/functions do not require any
-toolboxes.
+loops in the functions with names beginning "ParEst" or "estimate". Other scripts/functions do not
+require any toolboxes.
 
 
 -------------------------------------------------
