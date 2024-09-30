@@ -1,7 +1,7 @@
 This folder contains the Matlab scripts and functions and OpenBUGS scripts, as well the necessary
 input files, to implement the parameter estimation and uncertainty and sensitity analyses described
-in Gubbins "Using the basic reproduction number to quantify transmission and identify data gaps
-for epizootic haemorrhagic disease, an emerging vector-borne disease in Europe"
+in Gubbins (2024) Using the basic reproduction number to quantify transmission potential and identify data gaps
+for epizootic haemorrhagic disease virus. Royal Society Open Science.
 
 -------------------
 MATLAB REQUIREMENTS
